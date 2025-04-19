@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract EthCos {
+
+    event EtherDeposited(
+        address indexed depositor,
+        uint256 value,
+        string destination
+    );
+
+    mapping(address => uint256) private deposits;
+
+    function depositEther(string memory destinationAddress) external payable {
+        require(msg.value > 0, "You must send ETH");
+
+        deposits[msg.sender] += msg.value;
+
+        emit EtherDeposited(msg.sender, msg.value, destinationAddress);
+    }
+
+    function checkDeposit(address account) public view returns (uint256) {
+        return deposits[account];
+    }
+}
